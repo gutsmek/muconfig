@@ -15,7 +15,8 @@ include_directories(../contrib/cpptoml/include)
 
 # add main library
 add_library(${TARGETNAME} ${SOURCE} ${MUCONFIG_HEADER})
-target_link_libraries(${TARGETNAME})
+
+target_include_directories(${TARGETNAME} INTERFACE ${CMAKE_INSTALL_PREFIX}/include)
 
 set_target_properties(${TARGETNAME} PROPERTIES PUBLIC_HEADER "${MUCONFIG_HEADER}")
 set_property(TARGET ${TARGETNAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
@@ -30,10 +31,10 @@ install(TARGETS ${TARGETNAME} EXPORT ${TARGETNAME}-targets
 
 
 install(EXPORT ${TARGETNAME}-targets
-  FILE "${GLOB_PACKAGE_NAME}-targets-${TARGETNAME}.cmake"
+  FILE "${GLOB_PACKAGE_NAME}-${TARGETNAME}-targets.cmake"
   NAMESPACE ${GLOB_PACKAGE_NAME}::
   DESTINATION lib/cmake/${GLOB_PACKAGE_NAME}
-  COMPONENT ${TARGETNAME}
+  COMPONENT ${TARGETNAME}-dev
 )
 
 if(NOT TARGET uninstall)
